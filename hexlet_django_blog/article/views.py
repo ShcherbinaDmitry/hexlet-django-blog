@@ -1,11 +1,20 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.http import HttpResponse
 from django.views import View
 
 # Create your views here.
 
+def index(request, tags, article_id):
+    return render(request, 'article.html', context={
+        'tags': tags,
+        'article_id': article_id,
+    })
+
 class ArticleView(View):
-    def get(self, request, *args, **kwargs):
+    def index(self, request, *args, **kwargs):
+        print(args)
+        print(kwargs)
         return render(request, 'article.html', context={
             'app_name': 'article'
         })
