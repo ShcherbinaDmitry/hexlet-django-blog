@@ -13,8 +13,6 @@ def index(request, tags, article_id):
 
 class ArticleView(View):
     def index(self, request, *args, **kwargs):
-        print(args)
-        print(kwargs)
         return render(request, 'article.html', context={
             'app_name': 'article'
         })

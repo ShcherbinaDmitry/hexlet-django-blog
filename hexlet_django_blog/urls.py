@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from hexlet_django_blog.views import IndexPageView, about
+from hexlet_django_blog.views import IndexPageView
 
 urlpatterns = [
     path('', IndexPageView.index),
