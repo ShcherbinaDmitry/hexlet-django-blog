@@ -66,3 +66,15 @@ class ArticleFormUpdateView(View):
             return redirect('article_index')
 
         return render(request, 'update.html', {'form': form, 'article_id':article_id})
+    
+class ArticleFormDestroyView(View):
+    def post(self, request, *args, **kwargs):
+        article_id = kwargs.get('id')
+        article = Article.objects.get(id=article_id)
+        if article:
+            article.delete()
+            messages.warning(request, f"Article (ID: {article_id}) has been deleted!")
+        else:
+            messages.warning(request,  f"Couldn't delete article with ID: {article_id}!")
+
+        return redirect('article_index')
