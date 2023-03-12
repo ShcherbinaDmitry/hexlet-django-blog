@@ -1,16 +1,20 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
+from django.contrib import messages
 
-from hexlet_django_blog.article.models import Article
-from .forms import ArticleCommentForm
+from .models import Article
+from .forms import ArticleCommentForm, ArticleForm
+
 
 # Create your views here.
 class IndexView(View):
 
     def get(self, request, *args, **kwargs):
         articles = Article.objects.all()[:15]
+        flash_messages = messages.get_messages(request)
         return render(request, 'article/index.html', context={
-            'articles': articles
+            'articles': articles,
+            'messages': flash_messages,
         })
 
 class ArticleView(View):
@@ -28,8 +32,24 @@ class ArticleView(View):
             # comment.content = check_for_spam(form.data['content']) - process model
             comment.save()
 
+class ArticleFormCreateView(View):
+
+    def get(self, request, *args, **kwargs):
+        form = ArticleForm()
+        flash_messages = messages.get_messages(request)
+        return render(request, 'article/create.html', {'form': form})
+    
+    def post(self, request, *args, **kwargs):
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Article has been created!')
+            return redirect('article_index')
+        messages.error(request, 'Couldn\'t create an article. Check form data.')
+        return render(request, 'article/create.html', {'form': form})
 
 class CommentArticleView(View):
+
     def get(self, request, *args, **kwargs):
-        form = CommentArticleForm()
+        form = ArticleCommentForm()
         return render(request, 'comment.html', {'form': form})

@@ -1,6 +1,12 @@
 from django.forms import ModelForm
 
-from hexlet_django_blog.article.models import ArticleComment
+from .models import Article, ArticleComment
+
+
+class ArticleForm(ModelForm):
+    class Meta:
+        model = Article
+        fields = ['name', 'body']
 
 class ArticleCommentForm(ModelForm):
     class Meta:
