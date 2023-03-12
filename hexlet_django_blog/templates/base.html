@@ -9,8 +9,9 @@
 <div id="sidebar">
     {% block sidebar %}
         <ul>
-            <li><a href="/">Главная</a></li>
-            <li><a href="/article/">Статьи</a></li>
+            <li><a href="{% url 'index' %}">Главная</a></li>
+            <li><a href="{% url 'article_index' %}">Статьи</a></li>
+            <li><a href="{% url 'about' %}">О проекте<a/></li>
         </ul>
     {% endblock %}
 </div>
