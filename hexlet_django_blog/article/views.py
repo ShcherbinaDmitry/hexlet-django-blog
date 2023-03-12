@@ -48,8 +48,21 @@ class ArticleFormCreateView(View):
         messages.error(request, 'Couldn\'t create an article. Check form data.')
         return render(request, 'article/create.html', {'form': form})
 
-class CommentArticleView(View):
-
+class ArticleFormUpdateView(View):
+    
     def get(self, request, *args, **kwargs):
-        form = ArticleCommentForm()
-        return render(request, 'comment.html', {'form': form})
+        article_id = kwargs.get('id')
+        article = Article.objects.get(id=article_id)
+        form = ArticleForm(instance=article)
+        return render(request, 'article/update.html', {'form': form, 'article_id': article_id})
+
+    def post(self, request, *args, **kwargs):
+        article_id = kwargs.get('id')
+        article = Article.objects.get(id=article_id)
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            form.save()
+            messages.info(request, f"Article (ID: {article_id}) has been updated!")
+            return redirect('article_index')
+
+        return render(request, 'update.html', {'form': form, 'article_id':article_id})
