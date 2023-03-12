@@ -18,7 +18,7 @@ from django.urls import path, include
 from hexlet_django_blog.views import IndexPageView
 
 urlpatterns = [
-    path('', IndexPageView.index),
+    path('', IndexPageView.as_view()),
     path('about/', IndexPageView.get_about),
     path('article/', include('hexlet_django_blog.article.urls')),
     path("admin/", admin.site.urls),
